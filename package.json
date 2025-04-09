@@ -1,0 +1,28 @@
+{
+  "name": "opus",
+  "version": "1.0.0",
+  "description": "**OPUS - read, write, and live**<br> Opus is inspired by the Latin word for \"work\" or \"creation,\" often used to describe a masterpiece or an author’s body of work that defines their style and literary legacy. Opus provides a space where writers can share stories, connect with readers, and build a community. It’s a platform for creative expression, where every story contributes to a growing collection of unique narratives that celebrate storytelling and the legacies of the authors who craft them.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "npx nodemon --ext js,mjs,cjs,json,ejs,css server.js",
+    "format": "prettier --write ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "express-ejs": "^2.0.0",
+    "express-session": "^1.18.1",
+    "firebase": "^11.6.0",
+    "path": "^0.12.7",
+    "stripe": "^18.0.0",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}

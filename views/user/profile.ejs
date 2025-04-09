@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include('../partials/head') %>
+    <link rel="stylesheet" href="/static/css/user.css">
+</head>
+<body>
+    <div class="user-container">
+        <div class="user-content">
+            <img src="/static/images/default_profile.png">
+            <!-- Update email? -->
+            <p><strong><%= user.name %></strong></p>
+            <p><strong>Points:</strong> <%= user.points %></p>
+        </div>
+
+        <div class="forgot-password">
+            <form id="forgot">
+                <input type="email" id="email" placeholder="<%= user.email %>" value="<%= user.email %>" readonly>
+                <input type="submit" value="Change Password">
+                <br>
+                    <p id="message" class="message">&nbsp;</p>
+                <br>
+                <div>
+                    <a href="/story"><strong>Check out stories!</strong></a>
+                    <!-- Update logout logic? -->
+                    <span><a href="/api/auth/logout">Logout</a></span>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+          const form = document.getElementById("forgot");
+          const message = document.getElementById("message");
+      
+          form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+      
+            const email = document.getElementById("email").value;
+      
+            try {
+              const response = await fetch("/api/auth/recovery", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email })
+              });
+      
+              const result = await response.json();
+      
+              if (result.success) {
+                message.style.color = "rgb(0, 105, 0)";
+                message.textContent = result.message;
+              } else {
+                message.style.color = "red";
+                message.textContent = result.message;
+              }
+            } catch (e) {
+                message.style.color = "red";
+                message.textContent = e.message;
+            }
+          });
+        });
+    </script>
+</body>
+</html>

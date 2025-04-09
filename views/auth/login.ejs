@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include('../partials/head') %>
+    <link rel="stylesheet" href="/static/css/auth.css">
+</head>
+<body>
+    <div class="auth-container">
+      <div class="auth-content">
+        <form id="login">
+          <h3>Welcome to Opus<span> – read, write, and live</span></h3>
+          <input type="email" id="email" placeholder="Email">
+          <input type="password" id="password" placeholder="Password">
+          <input type="submit" value="Log In">
+            
+          <div>
+              <a href="/signup"><strong>Create an account.</strong></a>
+            <span><a href="/recovery"><span>Forgot password?</span></a></span>
+            <br>
+            <p id="message" class="message">&nbsp;</p>
+          </div>
+        </form>
+      </div>
+  
+      <img src="/static/images/login_img.png">
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const form = document.getElementById("login");
+        const message = document.getElementById("message");
+    
+        form.addEventListener("submit", async (event) => {
+          event.preventDefault();
+    
+          const email = document.getElementById("email").value;
+          const password = document.getElementById("password").value;
+    
+          try {
+            const response = await fetch("/api/auth/login", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ email, password })
+            });
+    
+            const result = await response.json();
+    
+            if (result.success) {
+              window.location.href = "/story";
+            } else {
+              message.style.color = "red";
+              message.textContent = result.message;
+            }
+          } catch (e) {
+              message.style.color = "red";
+              message.textContent = e.message;
+          }
+        });
+      });
+    </script>    
+</body>
+</html>

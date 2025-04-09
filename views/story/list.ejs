@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include('../partials/head') %>
+    <link rel="stylesheet" href="/static/css/story/story.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Responsive? -->
+        <div class="navbar">
+            <div class="user-profile"><a href="/profile"><img src="/static/images/default_profile.png" class="profile"></a></div>
+            <div class="nav-center">
+                <a href="/add"><strong>Share Story</strong></a>
+                <a href="/payment">Buy Subscription</a>
+            </div>
+            <div class="search-bar"><input type="text" placeholder="Find your soul..."></div>
+            <!-- Filter? -->
+        </div>
+        <div class="story-container">
+            <% stories.forEach(story => { %>
+                <div class="display-container">
+                    <img src="/static/images/logo.png" class="logo">
+                    <div class="text-container">
+                        <p id="title"><strong>Title:</strong> <%= story.title %></p>
+                        <p><strong>Genre:</strong> <%= story.genre %></p>
+                        <p><strong>Author:</strong> <%= story.author %></p>
+                    </div>
+                    <input type="hidden" value="<%= story.id %>">
+                </div>
+            <% }) %>
+        </div>
+    </div>  
+
+    <script>
+      const displayContainers = document.querySelectorAll('.display-container');
+
+      displayContainers.forEach((container) => {
+          container.addEventListener('click', () => {
+              const storyId = container.querySelector('input').value;
+              window.location.href = `/story/${storyId}`;
+          });
+      });
+
+      const searchInput = document.querySelector('input');
+  
+      searchInput.addEventListener('input', function () {
+          const filter = this.value.toLowerCase();
+          
+          displayContainers.forEach(container => {
+              const title = container.querySelector('#title').innerText.toLowerCase();
+              if (title.includes(filter)) {
+                  container.style.display = '';
+              } else {
+                  container.style.display = 'none';
+              }
+          });
+      });
+    </script>
+</body>
+</html>

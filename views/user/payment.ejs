@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include('../partials/head') %>
+    <link rel="stylesheet" href="/static/css/payment.css">
+</head>
+<body>
+    <div class="payment-container">
+        <!-- Fix changing position when nav-link is clicked? (due to p is display: block)? -->
+        <div class="payment-content">
+            <h3>Unlock Every Story<span> – 30-Day Subscription</span></h3>
+            <p>Subscribe now and enjoy unlimited access to all stories in the Opus app for 30 days. Dive into adventures, mysteries, romances, and more — anytime, anywhere. One subscription, endless imagination.</p>
+            <br>
+            <p><strong>Start your journey today!</strong></p>
+            <p>₱99 FOR 1 MONTH SUBSCRIPTION!</p>
+        </div>
+        <div class="payment-form subscription-container" id="subscription-container">
+          <form id="subscription">
+            <br>
+            <% if (hasSubscription) { %>
+              <p>Subscription active — <%= remainingDays %> day<%= remainingDays > 1 ? 's' : '' %> left</p>
+              <br>
+            <% } else { %>
+              <input type="submit" value="Buy Subscription">
+            <% } %>
+            <div class="nav-link">
+              <div>
+                <a class="btn-nav" onclick="showPoints()"><strong>Buy Points? </strong></a>
+              </div>
+              <div>
+                <span><a href="/story">Return to Story</a></span>
+              </div>
+            </div>
+            <br>
+          </form>
+        </div>
+        
+        <div class="payment-form point-container" id="point-container">
+          <form id="points">
+            <input type="number" id="amount" placeholder="Amount (₱1 = 1 Point)">
+            <input type="submit" value="Buy Points">
+            <div class="nav-link">
+              <div>
+                <a type="button" class="btn-nav" onclick="showSubscription()"><strong>Buy Subscription?</strong></a>
+              </div>
+              <div>
+                <span><a href="/story">Return to Story</a></span></div>
+            </div>
+          </form>
+        </div>
+        <div class="message-conta">
+          <p id="message" class="message">&nbsp;</p>
+        </div>
+    </div>
+    
+    <script>
+      const subscription = document.getElementById("subscription-container");
+      const point = document.getElementById("point-container");
+
+      const showPoints = () => {
+        subscription.style.display = "none";
+        point.style.display = "block";
+        message.textContent = "";
+      };
+
+      const showSubscription = () => {
+        subscription.style.display = "block";
+        point.style.display = "none";
+        message.textContent = "";
+      };  
+      
+      document.addEventListener("DOMContentLoaded", () => {
+        const form_subscription = document.getElementById("subscription");
+        const form_points = document.getElementById("points");
+        const message = document.getElementById("message");
+        
+        form_subscription.addEventListener("submit", async (event) => {
+          event.preventDefault();
+
+          try {
+            const response = await fetch("/api/payment/subscription", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" }
+            });
+    
+            const result = await response.json();
+            
+            if (result.success) {
+              message.style.color = "rgb(0, 105, 0)";
+              message.textContent = result.message;
+
+              setTimeout(() => {
+                window.location.href = "/payment";
+              }, 2000);
+            } else {
+              message.style.color = "red";
+              message.textContent = result.message;
+            }
+          } catch (e) {
+              message.style.color = "red";
+              message.textContent = e.message;
+          }
+        });
+
+        form_points.addEventListener("submit", async (event) => {
+          event.preventDefault();
+    
+          const amount = document.getElementById("amount").value;
+
+          if (isNaN(amount) || amount <= 0) {
+            message.style.color = "red";
+            message.textContent = "Enter a valid amount greater than 0";
+            return;
+          }
+    
+          try {
+            const response = await fetch("/api/payment/pay", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ amount })
+            });
+    
+            const result = await response.json();
+            
+            if (result.success) {
+              message.style.color = "rgb(0, 105, 0)";
+              message.textContent = result.message;
+
+              setTimeout(() => {
+                message.textContent = "";
+              }, 2000);
+            } else {
+              message.style.color = "red";
+              message.textContent = result.message;
+            }
+          } catch (e) {
+              message.style.color = "red";
+              message.textContent = e.message;
+          }
+        });
+      });
+    </script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include('../partials/head') %>
+    <link rel="stylesheet" href="/static/css/story/add.css">
+</head>
+<body>
+    <div class="container">
+        <div class="navbar">
+            <a href="/story">Back to stories...</a>
+            <div class="user-profile"><a href="/profile"><img src="/static/images/default_profile.png" class="profile"></a></div>
+        </div>
+        <div class="story-container">
+            <form id="add">
+                <div class="form-content">
+                    <label for="title"><strong>Title</strong></label>
+                    <input type="text" id="title" placeholder="Title" required>
+                </div>
+                <div class="form-content">
+                    <label for="genre"><strong>Genre</strong></label>
+                    <input type="text" id="genre" placeholder="Genre" required>
+                </div>
+                <div class="form-content">
+                    <label for="content"><strong>Content</strong></label>
+                    <textarea id="content" required></textarea>
+                </div>
+                
+                <div class="form-content">
+                    <input type="submit" value="Write my story">
+                    <p id="message" class="message">&nbsp;</p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const form = document.getElementById("add");
+        const message = document.getElementById("message");
+    
+        form.addEventListener("submit", async (event) => {
+          event.preventDefault();
+    
+          const title = document.getElementById("title").value;
+          const genre = document.getElementById("genre").value;
+          const content = document.getElementById("content").value;
+    
+          try {
+            const response = await fetch("/api/story/add", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ title, genre, content })
+            });
+    
+            const result = await response.json();
+    
+            if (result.success) {
+                message.style.color = "rgb(0, 105, 0)";
+              message.textContent = result.message;
+            } else {
+              message.style.color = "red";
+              message.textContent = result.message;
+            }
+          } catch (e) {
+              message.style.color = "red";
+              message.textContent = e.message;
+          }
+        });
+      });
+    </script>   
+</body>
+</html>

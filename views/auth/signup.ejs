@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include('../partials/head') %>
+    <link rel="stylesheet" href="/static/css/auth.css">
+</head>
+<body>
+    <div class="auth-container">
+      <div class="auth-content">
+        
+     <form id="signup">
+        <h3>Your story starts here<span> – all it takes is a click of the button</span></h3>
+        <input type="text" id="name" placeholder="Name">
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="password" placeholder="Password">
+        <input type="submit" value="Sign Up">
+        
+        <div>
+            <a href="/">Already have an account?</strong></a>
+            <br>
+            <p id="message" class="message">&nbsp;</p>
+        </div>
+      </form>
+      </div>
+  
+      <img src="/static/images/signup_img.png" class="signup-img">
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const form = document.getElementById("signup");
+        const message = document.getElementById("message");
+    
+        form.addEventListener("submit", async (event) => {
+          event.preventDefault();
+    
+          const name = document.getElementById("name").value;
+          const email = document.getElementById("email").value;
+          const password = document.getElementById("password").value;
+    
+          try {
+            const response = await fetch("/api/auth/signup", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ name, email, password })
+            });
+    
+            const result = await response.json();
+    
+            if (result.success) {
+              message.style.color = "rgb(0, 105, 0)";
+              message.textContent = result.message;
+            } else {
+              message.style.color = "red";
+              message.textContent = result.message;
+            }
+          } catch (e) {
+              message.style.color = "red";
+              message.textContent = e.message;
+          }
+        });
+      });
+    </script>  
+</body>
+</html>

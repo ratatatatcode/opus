@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include('../partials/head') %>
+    <link rel="stylesheet" href="/static/css/story/view.css">
+</head>
+<body>
+    <!-- Responsive? -->
+    <div class="container">
+        <div class="navbar">
+            <a href="/story">Back to stories...</a>
+            <div class="user-profile"><a href="/profile"><img src="/static/images/default_profile.png" class="profile"></a></div>
+        </div>
+        <div class="story-container">
+            <div class="text-container">
+                <div class="text-content">
+                    <label for="title"><strong>Title</strong></label>
+                    <p><%= story.title %></p>
+                </div>
+                <div class="text-content">
+                    <label for="genre"><strong>Genre</strong></label>
+                    <p><%= story.genre %></p>
+                </div>
+                <div class="text-content">
+                    <label for="content"><strong>Content</strong></label>
+                  
+                    <% if (hasSubscription) { %>
+                      <p class="content"><%= story.content %></p>
+                    <% } else { 
+                         const halfLength = Math.floor(story.content.length / 2);
+                         const preview = story.content.slice(0, halfLength);
+                    %>
+                      <p class="content"><%= preview %>... <em><a href="/payment">Subscribe to continue reading</a></em></p>
+                    <% } %>
+                </div>                  
+            </div>
+        </div>
+    </div>
+</body>
+</html>

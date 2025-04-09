@@ -1,0 +1,126 @@
+.profile {
+  height: 30px;
+}
+
+input,
+textarea {
+  width: 80%;
+  padding: 6px;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  font-size: 16px;
+  resize: none;
+  background: #fbfbfb;
+  box-shadow:
+    0 0 0 1px #dddddd,
+    0 2px 4px 0 rgb(0 0 0 / 7%),
+    0 1px 1.5px 0 rgb(0 0 0 / 5%);
+}
+
+input {
+  height: 36px;
+}
+
+textarea {
+  height: 96px;
+}
+
+input[type="submit"] {
+  background-color: #eb5b00;
+  color: white;
+  font-weight: bold;
+  margin-inline: 6px;
+  border-radius: 12px;
+}
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 12px 12px 0 12px;
+}
+
+.story-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.logo {
+  height: auto;
+  width: 60%;
+}
+
+p {
+  margin: 0 12px 0 12px;
+  align-self: flex-start;
+  font-size: 0.9rem;
+}
+
+a {
+  font-size: 1rem;
+  text-decoration: none;
+  color: #eb5b00;
+  padding-left: 6px;
+}
+
+a:active {
+  color: #eb5b00;
+}
+
+.text-container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.text-content {
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.content {
+  height: 200px;
+  width: 100%;
+  overflow-y: scroll;
+}
+
+label {
+  width: 96%;
+  display: block;
+  text-align: left;
+}
+
+.message {
+  text-align: center;
+  width: auto;
+  margin: 12px auto;
+  padding: 6px;
+}
+
+.content em a {
+  color: #eb5b00;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+@media (max-width: 767px) {
+  .story-container,
+  form,
+  input,
+  textarea,
+  label,
+  .content {
+    width: 100%;
+  }
+}
